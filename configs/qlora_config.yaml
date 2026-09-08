@@ -1,0 +1,67 @@
+# QLoRA Instruction-Tuning Configuration for Phi-3-mini on LexGLUE/LEDGAR
+
+model:
+  base_model_id: "microsoft/Phi-3-mini-4k-instruct"
+  trust_remote_code: true
+  torch_dtype: "bfloat16"
+
+dataset:
+  dataset_name: "coastalcph/lex_glue"
+  dataset_subset: "ledgar"
+  num_labels: 100
+  max_seq_length: 256
+  text_field: "text"
+  label_field: "label"
+
+quantization:
+  load_in_4bit: true
+  bnb_4bit_quant_type: "nf4"
+  bnb_4bit_use_double_quant: true
+  bnb_4bit_compute_dtype: "bfloat16"
+
+lora:
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  bias: "none"
+  task_type: "CAUSAL_LM"
+  target_modules:
+    - "o_proj"
+    - "qkv_proj"
+    - "gate_up_proj"
+    - "down_proj"
+
+training:
+  output_dir: "./outputs/phi3-ledgar-qlora"
+  num_train_epochs: 1
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 8       # Effective batch size = 4 * 8 = 32
+  gradient_checkpointing: true
+  learning_rate: 2.0e-4
+  lr_scheduler_type: "cosine"
+  warmup_steps: 50
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  optim: "paged_adamw_8bit"
+  bf16: true
+  fp16: false
+  logging_steps: 5
+  eval_strategy: "steps"
+  eval_steps: 200
+  save_strategy: "steps"
+  save_steps: 200
+  save_total_limit: 2
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_loss"
+  greater_is_better: false
+  seed: 42
+
+hub:
+  push_to_hub: true
+  hub_model_id: "mshaiel2004/phi3-legal-clause-qlora"
+  hub_private_repo: false
+
+wandb:
+  project: "legal-clause-classifier"
+  run_name: "phi3-qlora-ledgar-sft"

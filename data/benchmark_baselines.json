@@ -1,0 +1,34 @@
+{
+  "benchmark": "LexGLUE/LEDGAR",
+  "task": "100-class Legal Provision Multi-Class Classification",
+  "metric_primary": "Macro-F1",
+  "metric_secondary": "Micro-F1",
+  "reference": "Chalkidis et al., 2022 - LexGLUE: A Benchmark Dataset for Legal Language Understanding in English (ACL 2022)",
+  "baselines": {
+    "BERT-base": {
+      "architecture": "Encoder-only Transformer (110M)",
+      "pretraining_corpus": "Wikipedia + BookCorpus (General English)",
+      "macro_f1": 80.0,
+      "micro_f1": 87.5
+    },
+    "RoBERTa-base": {
+      "architecture": "Encoder-only Transformer (125M)",
+      "pretraining_corpus": "160GB General English text",
+      "macro_f1": 81.5,
+      "micro_f1": 88.2
+    },
+    "LegalBERT": {
+      "architecture": "Domain-Adapted Encoder Transformer (110M)",
+      "pretraining_corpus": "12GB US/UK/EU Legal Texts & Contracts",
+      "macro_f1": 82.5,
+      "micro_f1": 88.4
+    }
+  },
+  "our_model": {
+    "name": "Phi-3-mini-4k-instruct-QLoRA",
+    "architecture": "Causal Decoder-only LLM (3.8B Base + 8M LoRA rank-16)",
+    "approach": "4-bit NF4 Quantization + Instruction SFT + Balanced Class-Weighted CE Loss",
+    "target_modules": ["o_proj", "qkv_proj", "gate_up_proj", "down_proj"],
+    "hub_id": "mshaiel2004/phi3-legal-clause-qlora"
+  }
+}

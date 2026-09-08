@@ -1,0 +1,45 @@
+{
+  "benchmark": "LexGLUE/LEDGAR",
+  "task": "100-class Contract Provision Multi-Class Classification",
+  "adapter_model_id": "mshaiel2004/phi3-legal-clause-qlora",
+  "base_model_id": "microsoft/Phi-3-mini-4k-instruct",
+  "evaluated_samples": 500,
+  "metrics": {
+    "accuracy": 62.60,
+    "micro_f1": 62.60,
+    "macro_f1": 53.52,
+    "random_guess_baseline": 1.00
+  },
+  "latency_profile": {
+    "mean_latency_ms": 2569.8,
+    "throughput_clauses_per_sec": 0.39
+  },
+  "comparison_summary": {
+    "BERT-base": {
+      "macro_f1": 80.0,
+      "micro_f1": 87.5,
+      "parameters": "110M",
+      "architecture": "Encoder (Full Fine-Tuning)"
+    },
+    "RoBERTa-base": {
+      "macro_f1": 81.5,
+      "micro_f1": 88.2,
+      "parameters": "125M",
+      "architecture": "Encoder (Full Fine-Tuning)"
+    },
+    "LegalBERT": {
+      "macro_f1": 82.5,
+      "micro_f1": 88.4,
+      "parameters": "110M",
+      "architecture": "Encoder (Full Fine-Tuning)"
+    },
+    "Phi-3-mini-QLoRA": {
+      "macro_f1": 53.52,
+      "micro_f1": 62.60,
+      "accuracy": 62.60,
+      "parameters": "3.8B (8M Trainable LoRA Adapter)",
+      "architecture": "Generative Causal LLM (Instruction Tuning, 250 steps, 4-bit NF4)",
+      "hub_id": "mshaiel2004/phi3-legal-clause-qlora"
+    }
+  }
+}

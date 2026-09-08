@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "legal-clause-classifier"
+version = "0.1.0"
+description = "Fine-tuning Phi-3-mini on LexGLUE/LEDGAR for 100-class legal contract provision classification via QLoRA"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Portfolio Project Author" }
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP"]
+ignore = ["E501", "E402"]
+
+[tool.ruff.lint.per-file-ignores]
+"notebooks/*" = ["F821", "F811"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

@@ -1,0 +1,24 @@
+# Local Inference Configuration for NVIDIA GTX 1050 (4GB VRAM) & CPU Fallback
+
+base_model_id: "microsoft/Phi-3-mini-4k-instruct"
+adapter_model_id: "mshaiel2004/phi3-legal-clause-qlora"  # or local checkpoint directory
+
+quantization:
+  load_in_4bit: true
+  bnb_4bit_quant_type: "nf4"
+  bnb_4bit_use_double_quant: true
+  # Pascal architecture (GTX 1050) does not support bfloat16 natively; use float16
+  bnb_4bit_compute_dtype: "float16"
+
+generation:
+  max_new_tokens: 32
+  temperature: 0.1
+  do_sample: false
+  top_p: 1.0
+
+hardware:
+  device_map: "auto"
+  low_cpu_mem_usage: true
+  max_memory:
+    0: "3.2GiB"   # Cap GPU memory to prevent OOM on 4GB VRAM
+    cpu: "12GiB"
